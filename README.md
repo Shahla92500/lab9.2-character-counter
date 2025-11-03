@@ -71,3 +71,26 @@ export default defineConfig([
   },
 ])
 ```
+
+***************
+-How did you handle state updates when the text changed? by callback method:
+Child (TextInput) listens to typing.
+Its onChange handler grabs e.target.value and calls the callback prop from the parent:
+
+onTextChange(nextText)
+Parent (CharacterCounter) owns the state
+
+The parent receives that value in the callback and updates state:
+const handleTextChange = (next: string) => setText(next)
+
+Derived data updates automatically
+
+Because text changed, the parent recomputes stats (chars, words, reading time) and passes them down to StatsDisplay.
+
+-How did you ensure the UI remained responsive during rapid text input?
+I ensured the UI remained responsive during rapid text input by using React’s state and callback pattern, which updates asynchronously.
+
+-What challenges did you face when implementing the statistics calculations?
+to understand the flow between childs and parents and understad who is parent.
+also for counting I had the chalanges, empty input: ''.split(/\s+/) can return [''] → wrong count; I needed trim() first.
+Multiple spaces/newlines/tabs: treat any run of whitespace as a single separator (/\s+/ after trim()).
